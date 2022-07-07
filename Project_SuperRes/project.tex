@@ -46,16 +46,16 @@ Within the Computer Science area, one of the topics of high interest has always 
 
 % Problem
 %diversi problemi (lista) tra cui super Resolution % attuale: cit cose super res NVDIA DLSS
-The first problem CV tried to solve was to make a robot "see" the world by connecting a video camera to a computer, around the 1960s at MIT. Today the field made several steps further, and there are many more problems that the CV aims to solve. Among these, we find image classification, the task of deciding whether class images belong, object detection, which is finding and classifying objects within an image, and semantic segmentation, which consists of grouping the parts of an image that belong to the same class of objects. With the advancement of technology, new challenges presented themselves, like the problem of the upscaling image. It is about reconstructing a meaningful high-resolution image (HR) from a low-resolution image (LR). This task is called Image Super-Resolution (SR). SR is a fundamentally ill-posed problem. In fact, for a given LR image, there exist infinitely many compatible HR predictions. Nevertheless, SR has several real-world applications such as surveillance (e.g., face recognition in upscaled images) and media sharing (e.g., sending LR images and upscaling on the fly). This issue is of interest also to large companies like NVIDIA that developed the deep learning super sampling (DLSS) \cite{dlss} to use it on its GPUs when rendering video game frames. The idea is to render the game at LR (e.g., 1920$\times$1080) and then use DLSS to upscale images to HR (e.g., 3840$\times$2160). In this way, it is possible to play HR games with less computational power. 
+The first problem CV tried to solve was to make a robot "see" the world by connecting a video camera to a computer, around the 1960s at MIT. Today the field made several steps further, and there are many more problems that the CV aims to solve. Among these, we find image classification, the task of deciding whether class images belong, object detection, which is finding and classifying objects within an image, and semantic segmentation, which consists of grouping the parts of an image that belong to the same class of objects. With the advancement of technology, new challenges presented themselves, like the problem of the upscaling image. It is about reconstructing a meaningful high-resolution image (HR) from a low-resolution image (LR). This task is called Image Super-Resolution (SR). SR is a fundamentally ill-posed problem. In fact, for a given LR image, there exist infinitely many compatible HR predictions. Nevertheless, SR has several real-world applications such as surveillance (e.g., face recognition in upscaled images) and media sharing (e.g., sending LR images and upscaling on the fly). This issue is of interest also to large companies like NVIDIA that developed the deep learning super sampling (DLSS) \cite{dlss} to use it on its GPUs when rendering video game frames. The aim is to render the game at LR (e.g., 1920$\times$1080) and then use DLSS to upscale images to HR (e.g., 3840$\times$2160). In this way, it is possible to play HR games with less computational rendering power. 
 
 % Goal 
-Regarding the SR problem, there are also some public competitions, such as the ``Learning the Super-Resolution Space'' challenge in 2021, held as part of the $6th{th}$ edition of the New Trends in Image Restoration and Enhancement (NTIRE) workshop, in conjunction with the 2021 Conference on Computer Vision and Pattern Recognition (CVPR). The goal of the ``Learning the Super-Resolution Space'' challenge is to develop an SR method that can upscale downscaled images sampled from the space of plausible HR images. More formally, given an HR image $IMG$ sampled from a space of images $S_{IMG}$ and downscaled to an LR image $img$, the aim is to find a method $f$ that
+Regarding the SR problem, there are also some public competitions, such as the 2021 ``Learning the Super-Resolution Space'' challenge, held as part of the $6th{th}$ edition of the New Trends in Image Restoration and Enhancement (NTIRE) workshop, in conjunction with the 2021 Conference on Computer Vision and Pattern Recognition (CVPR). The goal of the ``Learning the Super-Resolution Space'' challenge is to develop an SR method that can upscale downscaled images sampled from the space of plausible HR images. More formally, given an HR image $IMG$ sampled from a space of images $S_{IMG}$ and downscaled to an LR image $img$, the aim is to find a method $f$ that
 
 \begin{displaymath}
     IMG' = f(img)
 \end{displaymath}
 
-\noindent where $IMG'$ is an HR image and $IMG' \approx IMG$. The challenge contains two tracks, targeting 4X and 8X super-resolution respectively. The running methods shall achieve the highest possible photo-realism and be consistent with the input low-resolution image. The methods are tested with the following metrics \cite{ntire21}. %(https://openaccess.thecvf.com/content/CVPR2021W/NTIRE/papers/Lugmayr_NTIRE_2021_Learning_the_Super-Resolution_Space_Challenge_CVPRW_2021_paper.pdf) 
+\noindent where $IMG'$ is an HR image and it belongs to a plausible space of images. The challenge contains two tracks, targeting 4X and 8X super-resolution respectively. The running methods shall achieve the highest possible photo-realism and be consistent with the input LR image. The methods are tested with the following metrics \cite{ntire21}. %(https://openaccess.thecvf.com/content/CVPR2021W/NTIRE/papers/Lugmayr_NTIRE_2021_Learning_the_Super-Resolution_Space_Challenge_CVPRW_2021_paper.pdf) 
 \begin{itemize}
     \item[$-$] \textbf{Diversity score}: This metric aims to measure how well the SR image of ground truth is represented in the predicted space. From the predicted image $IMG'$ and the original image $IMG$, $k$ random patches are sampled $y_k \ in \mathbb{R}^{N \times N \times 3}$ and the similarity is calculated with a distance metric $d$.  To obtain the significant diversity that the samples represent, testers calculate by how much the minimum distance from the reference patch decreases when $M$ samples are used,
 
@@ -71,24 +71,24 @@ Regarding the SR problem, there are also some public competitions, such as the `
 
     \item[$-$] \textbf{LR-PSNR}: This metric aims to measure the amount of information retained in the SR image compared to the LR image measuring the LR-PSNR. It is calculated as the PSNR between the input LR image and the predicted sample resized with the given bicubic kernel. The goal of this challenge is to obtain an LR-PSNR of at least 45dB.
 
-    \item[$-$] \textbf{Mean Opinion Rank}: This metric aims to assess the degree of photorealism of an image. This task is performed by humans on three different 80$\times$80 cutouts of the 100 images in the test set. Each task is performed by five different users. Finally, the user is asked to rank the cutouts according to their opinion.
+    \item[$-$] \textbf{Mean Opinion Rank}: This metric aims to assess the degree of photorealism of an image. This task is performed by humans on three different 80$\times$80 pixels cutouts of the 100 images in the test set. Each task is performed by five different users. Finally, the user is asked to rank the cutouts according to their opinion.
 \end{itemize}
 
 \noindent The participating methods are ranked according to each metric. These ranks then are combined into a final score. The first method wins the challenge.
 
 % Task
-After AlexNet won the ImageNet Large Scale Visual Recognition Challenge in 2012, deep learning (DL) methods became increasingly popular in the CV field because they performed significantly better than methods used up to that point in a wide set of tasks. Following this trend, during NTIRE 2021 the most common approach was the use of DL methods. In particular, Generative Adversarial Networks (GANs), Variational AutoEncoders (VAEs), GANs trained with implicit maximum likelihood estimation (IMLE), and Flow models were used. \\ %In this report we discuss the last method. \\
+After AlexNet won the 2012 ImageNet Large Scale Visual Recognition Challenge, deep learning (DL) methods became increasingly popular in the CV field because they performed significantly better than methods used up to that point in a wide set of tasks. Following this trend, during NTIRE 2021 the most common approach was the use of DL methods. In particular, Generative Adversarial Networks (GANs), Variational AutoEncoders (VAEs), GANs trained with implicit maximum likelihood estimation (IMLE), and Flow models were used. \\ %In this report we discuss the last method. \\
 
-% ????
-\colorbox{red}{DA RISCRIVERE}
-In section~\ref{sec:sota}  we describe the State-of-the-art architectures for SR. In section~\ref{sec:model} we describe in detail how the flow models for SR work. In section~\ref{sec:eval} we run some tests with the aforementioned flow models. Finally, in section~\ref{sec:conc} se we draw the conclusions.
 
+In section~\ref{sec:sota} we describe the State-of-the-art approaches for the SR task. In section~\ref{sec:model} we describe in detail how the NTIRE flow models for SR work. In section~\ref{sec:eval} we run some tests with the aforementioned flow models. Finally, in section~\ref{sec:conc} se we draw the conclusions.
+
+\newpage
 \section{State-of-the-art architectures for Super Resolution}\label{sec:sota}
-\colorbox{red}{ADD INTRO} \\
-\colorbox{red}{ADD SOME CITE TO SOTA OF FOLLOWING MODELS} \\
+%In this section we describe the idea of the approaches used during the 2021 ``Learning the Super-Resolution Space'' challenge. 
+\colorbox{red}{TODO} \\
 
 \subsection{Generative Adversarial Networks}
-The Generative Adversarial Networks was introduced in \cite{gans} in 2014. Goodfellow's team proposed two networks that act as generators and discriminators. The former network aims to generate data from random noise, while the second method must decide whether the data generated is realistic or not. The two models are trained alternately, so when the generator is trained, the discriminator is kept constant and vice versa. 
+The Generative Adversarial Networks was introduced in \cite{gans} in 2014. Goodfellow's team proposed two networks that act as generator and discriminator. The former network aims to generate data from random noise, while the second method must decide whether the data generated is realistic or not. The two models are trained alternately, so when the generator is trained, the discriminator is kept constant and vice versa. Figure~\ref{img:gan} show the base GAN architecture.
 \begin{figure}[h]
     \centering
     \includegraphics[scale=.3]{gan.png}
@@ -96,9 +96,10 @@ The Generative Adversarial Networks was introduced in \cite{gans} in 2014. Goodf
     \label{img:gan}
 \end{figure}
 
+Since the GAN approach is deterministic and has usually a low LR-PSNR, few teams add some layers to make it stochastic and LR consistent. The former layers add some random noise during the inference time, while the latter layers are based on \cite{esp} that is a GUI based method to interactively exploring the manifold of possible HR images. 
 
 \subsection{Variational Auto-Encoders}
-The Variational Auto-Encoder (VAE) architecture was introduced in \cite{vae}. VAE is an autoencoder that, unlike AutoEncoders, encodes data in two vectors that are means ($\mu$) and standard deviations ($\sigma$). During the training, those vectors are constrained to ensure that the latent distribution they describe has some properties. Some random samples from the latent distribution are given to the decoder to generate new data.
+The Variational Auto-Encoder (VAE) architecture was introduced in \cite{vae}. VAE is an autoencoder that, unlike AutoEncoders, encodes data in two vectors that are means ($\mu$) and standard deviations ($\sigma$). During the training, those vectors are constrained to ensure that the latent distribution they describe has some properties. To achive stochastic image generation some noise is add to the discriminator's input.
 
 \begin{figure}[h]
     \centering
@@ -117,17 +118,22 @@ Implicit Maximum Likelihood Estimator (IMLE) is a technique to train implicit mo
     \hat{\theta}_{IMLE} = \normalfont{arg} \min_{\theta} \mathbb{E}_{\tilde{x}_1^{\theta}, ..., \tilde{x}_m^{\theta}} \biggl[ \sum^n _{i=1} \min_{j \in [m]} ||\tilde{x}_j^{\theta}-x_i||_2^2\biggr]
 \end{equation}
 where $x_1, ... x_n$ is the set of $n$ samples and $P_\theta$ is some unknown parameterized probability with density $p_\theta$. $\tilde{x}_1^\theta, ... \tilde{x}^\theta_m$ is the set of i.i.d. samples from $P_\theta$ with $m \geq n$.
-
+\colorbox{red}{ADD: https://arxiv.org/pdf/1610.03483.pdf}
 
 \subsection{Flow models}
-Flow models are particular architectures in which data (usually images) flows in both directions. They aim to learn the distribution of HR data $p_{y|x}(y|x, \theta)$ (where $x$ is the LR sample, $y$ is the HR sample and $\theta$ are the parameters of the function $f$), and not only an injective correspondence $x \rightarrow y$. In this way, the model can sample multiple HR samples from the learned plausible distribution given one LR sample. The model is also required to be invertible w.r.t $y$, which means given the latent encoding $z = f_{\theta}(y;x)$ we can reconstruct $y$ as $y = f_{\theta}^{-1}(z;x)$. 
+Flow models are particular architectures in which data (usually images) flows in both directions. They aim to learn the distribution of HR data $p_{y|x}(y|x, \theta)$ (where $x$ is the encoded nHR sample, $y$ is the HR sample and $\theta$ are the parameters of the function $f$), and not only an injective correspondence $x \rightarrow y$. In this way, the model can sample multiple HR samples from the learned plausible distribution given one LR sample. The model is also required to be invertible w.r.t $y$, which means given the latent encoding $z = f_{\theta}(y;x)$ we can reconstruct $y$ as $y = f_{\theta}^{-1}(z;x)$. As in the previous models, also flow models accept noise to generate stochastic images.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=.6]{flow.png}
+    \caption{Normalizing flow model architecture. y is the HR image, x is the encoded HR image and z is the latent vector.}
+    \label{img:vae}
+\end{figure}
 
 
-
-
+\newpage
 \section{Flow models for Super Resolution}\label{sec:model}
 \colorbox{red}{ADD INTRO} \\
-Early DL approaches trained feed-forward architectures using $L_1$\footnote{$L_1(y,\hat{y}) = \sum^n_{i=1} |y-\hat{y}|$} or $L_2$\footnote{$L_2(y,\hat{y}) = \sum^n_{i=1} (y-\hat{y})^2$} losses. The problem with these methods is they reduce high frequencies resulting in blurred images because of the average nature of the aforementioned loss functions. To address this problem more recent approaches introduced adversarial training and perceptual losses functions (work by summing all the squared errors between all the pixels and taking the mean). Adversarial methods obtain better results while they can compute a single prediction for an image. They also use multiple loss functions during the training phase with careful parameter tuning.
+%Early DL approaches to the SR task trained feed-forward architectures using $L_1$\footnote{$L_1(y,\hat{y}) = \sum^n_{i=1} |y-\hat{y}|$} or $L_2$\footnote{$L_2(y,\hat{y}) = \sum^n_{i=1} (y-\hat{y})^2$} losses. The problem with these methods is they reduce high frequencies resulting in blurred images because of the average nature of the aforementioned loss functions. To address this problem more recent approaches introduced adversarial training and perceptual losses functions (work by summing all the squared errors between all the pixels and computing the mean). Adversarial methods obtain better results while they can compute a single prediction for an image. They also use multiple loss functions during the training phase with careful parameter tuning.
 
 \subsection{Flow models' loss function}
 Flow models are trained with a single loss function that is negative log-likelihood\footnote{$\mathcal{L}(\theta; x, y) = - \text{log}\:p_{y|x}(y|x, \theta)$} (NLL), which simplifies training. The core idea of normalizing flow is to parametrize the distribution $p_{y|x}$ using a neural network $f_\theta$.  The distribution $p_{y|x}$ can be computed as
@@ -290,7 +296,7 @@ images of the DIV2K dataset reported in the papers. The arrows near the metric's
     \label{tab:8x}
 \end{table}
 \colorbox{red}{ADD COMMENT}
-
+%As we could espect, the SRFlow models has the lowest performances. Looking at the diversity score the NCSR model is the best, this can be explained by the greater amount of noise that is injected in the model. The SRFlow-DA model is the one with largest filters, 
 
 
 \newpage
@@ -319,6 +325,9 @@ images of the DIV2K dataset reported in the papers. The arrows near the metric's
 
     \bibitem{rrdb}
     Wang, Xintao, Ke Yu, Shixiang Wu, Jinjin Gu, Yihao Liu, Chao Dong, Yu Qiao, and Chen Change Loy. "Esrgan: Enhanced super-resolution generative adversarial networks." In Proceedings of the European conference on computer vision (ECCV) workshops, pp. 0-0. 2018.
+
+    \bibitem{esp}
+    Bahat, Yuval, and Tomer Michaeli. "Explorable super resolution." In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 2716-2725. 2020.
 
     \bibitem{gans}
     Goodfellow, Ian, Jean Pouget-Abadie, Mehdi Mirza, Bing Xu, David Warde-Farley, Sherjil Ozair, Aaron Courville, and Yoshua Bengio. "Generative adversarial nets." Advances in neural information processing systems 27 (2014).
