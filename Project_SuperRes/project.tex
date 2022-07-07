@@ -131,7 +131,7 @@ Flow models are particular architectures in which data (usually images) flows in
 
 
 \newpage
-\section{Flow models for Super Resolution}\label{sec:model}
+\section{Flow models for Super Resolution}\label{sec:model} %https://lilianweng.github.io/posts/2018-10-13-flow-models/
 \colorbox{red}{ADD INTRO} \\
 %Early DL approaches to the SR task trained feed-forward architectures using $L_1$\footnote{$L_1(y,\hat{y}) = \sum^n_{i=1} |y-\hat{y}|$} or $L_2$\footnote{$L_2(y,\hat{y}) = \sum^n_{i=1} (y-\hat{y})^2$} losses. The problem with these methods is they reduce high frequencies resulting in blurred images because of the average nature of the aforementioned loss functions. To address this problem more recent approaches introduced adversarial training and perceptual losses functions (work by summing all the squared errors between all the pixels and computing the mean). Adversarial methods obtain better results while they can compute a single prediction for an image. They also use multiple loss functions during the training phase with careful parameter tuning.
 
