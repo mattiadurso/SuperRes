@@ -10,6 +10,7 @@
 \usepackage{graphicx}
 \graphicspath{ {./img/} }
 \usepackage{subfig}
+\usepackage{comment}
 
 
 
@@ -55,7 +56,12 @@ Regarding the SR problem, there are also some public competitions, such as the 2
     IMG' = f(img)
 \end{displaymath}
 
-\noindent where $IMG'$ is an HR image and it belongs to a plausible space of images. The challenge contains two tracks, targeting 4X and 8X super-resolution respectively. The running methods shall achieve the highest possible photo-realism and be consistent with the input LR image. The methods are tested with the following metrics \cite{ntire21}. %(https://openaccess.thecvf.com/content/CVPR2021W/NTIRE/papers/Lugmayr_NTIRE_2021_Learning_the_Super-Resolution_Space_Challenge_CVPRW_2021_paper.pdf) 
+\noindent where $IMG'$ is an HR image and it belongs to a plausible space of images. \\
+
+In section~\ref{sec:sota} we describe the State-of-the-art approaches for the SR task. In section~\ref{sec:model} we describe in detail how the NTIRE flow models for SR work. In section~\ref{sec:eval} we run some tests with the aforementioned flow models. Finally, in section~\ref{sec:conc} se we draw the conclusions.
+
+\subsection{NTIRE challenge details}
+The challenge contains two tracks, targeting 4X and 8X super-resolution respectively. The running methods shall achieve the highest possible photo-realism and be consistent with the input LR image. The methods are tested with the following metrics \cite{ntire21}. %(https://openaccess.thecvf.com/content/CVPR2021W/NTIRE/papers/Lugmayr_NTIRE_2021_Learning_the_Super-Resolution_Space_Challenge_CVPRW_2021_paper.pdf) 
 \begin{itemize}
     \item[$-$] \textbf{Diversity score}: This metric aims to measure how well the SR image of ground truth is represented in the predicted space. From the predicted image $IMG'$ and the original image $IMG$, $k$ random patches are sampled $y_k \ in \mathbb{R}^{N \times N \times 3}$ and the similarity is calculated with a distance metric $d$.  To obtain the significant diversity that the samples represent, testers calculate by how much the minimum distance from the reference patch decreases when $M$ samples are used,
 
@@ -80,12 +86,11 @@ Regarding the SR problem, there are also some public competitions, such as the 2
 After AlexNet won the 2012 ImageNet Large Scale Visual Recognition Challenge, deep learning (DL) methods became increasingly popular in the CV field because they performed significantly better than methods used up to that point in a wide set of tasks. Following this trend, during NTIRE 2021 the most common approach was the use of DL methods. In particular, Generative Adversarial Networks (GANs), Variational AutoEncoders (VAEs), GANs trained with implicit maximum likelihood estimation (IMLE), and Flow models were used. \\ %In this report we discuss the last method. \\
 
 
-In section~\ref{sec:sota} we describe the State-of-the-art approaches for the SR task. In section~\ref{sec:model} we describe in detail how the NTIRE flow models for SR work. In section~\ref{sec:eval} we run some tests with the aforementioned flow models. Finally, in section~\ref{sec:conc} se we draw the conclusions.
 
 \newpage
 \section{State-of-the-art architectures for Super Resolution}\label{sec:sota}
-%In this section we describe the idea of the approaches used during the 2021 ``Learning the Super-Resolution Space'' challenge. 
-\colorbox{red}{TODO} \\
+In this section we describe the idea of the approaches used during the 2021 ``Learning the Super-Resolution Space'' challenge. They are four approaches based on DL techniques.
+
 
 \subsection{Generative Adversarial Networks}
 The Generative Adversarial Networks was introduced in \cite{gans} in 2014. Goodfellow's team proposed two networks that act as generator and discriminator. The former network aims to generate data from random noise, while the second method must decide whether the data generated is realistic or not. The two models are trained alternately, so when the generator is trained, the discriminator is kept constant and vice versa. Figure~\ref{img:gan} show the base GAN architecture.
@@ -132,7 +137,7 @@ Flow models are particular architectures in which data (usually images) flows in
 
 \newpage
 \section{Flow models for Super Resolution}\label{sec:model} %https://lilianweng.github.io/posts/2018-10-13-flow-models/
-\colorbox{red}{ADD INTRO} \\
+In this sction we describe in detail \cite{srFlow} and the two variations \cite{srFlow-da,ncsr} that compete in the challenge. Some details are in common like the loss function used and the majority of the layers.
 %Early DL approaches to the SR task trained feed-forward architectures using $L_1$\footnote{$L_1(y,\hat{y}) = \sum^n_{i=1} |y-\hat{y}|$} or $L_2$\footnote{$L_2(y,\hat{y}) = \sum^n_{i=1} (y-\hat{y})^2$} losses. The problem with these methods is they reduce high frequencies resulting in blurred images because of the average nature of the aforementioned loss functions. To address this problem more recent approaches introduced adversarial training and perceptual losses functions (work by summing all the squared errors between all the pixels and computing the mean). Adversarial methods obtain better results while they can compute a single prediction for an image. They also use multiple loss functions during the training phase with careful parameter tuning.
 
 \subsection{Flow models' loss function}
@@ -262,6 +267,7 @@ Figure~\ref{img:model} graphically shows a representation of the model.
     \label{img:model_2}
 \end{figure}
 
+\begin{comment}
 \subsection{Metrics comparison}
 The table \ref{tab:4x} and table \ref{tab:8x} show the 4$\times$ and 8$\times$ results of the models on the 100 validation
 images of the DIV2K dataset reported in the papers. The arrows near the metric's name indicate the direction for a better result. Best results are highlighted in bold only if the value is reported for all the models. The * means the value is not reported in the original model's paper but in another paper for comparison purposes. Inference time is measured by \cite{srFlow-da} for generating an output image size of 1920$\times$1080. Note that the training times and the inference times are measured on NVIDIA GeForce RTX 2080 TI. 
@@ -297,7 +303,7 @@ images of the DIV2K dataset reported in the papers. The arrows near the metric's
 \end{table}
 \colorbox{red}{ADD COMMENT}
 %As we could espect, the SRFlow models has the lowest performances. Looking at the diversity score the NCSR model is the best, this can be explained by the greater amount of noise that is injected in the model. The SRFlow-DA model is the one with largest filters, 
-
+\end{comment}
 
 \newpage
 \section{Experiments ?}\label{sec:eval}
